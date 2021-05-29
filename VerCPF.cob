@@ -4,10 +4,10 @@
       * Purpose: This program checks if the CPF is a valid number
       * Tectonics: cobc
       ******************************************************************
-      * This program is free software: you can redistribute 
-      * it and/or modify it under the terms of the GNU General 
-      * Public License as published by the Free Software Foundation, 
-      * either version 3 of the License, or (at your option) any 
+      * This program is free software: you can redistribute
+      * it and/or modify it under the terms of the GNU General
+      * Public License as published by the Free Software Foundation,
+      * either version 3 of the License, or (at your option) any
       * later version.
 
       * This program is distributed in the hope that it will be useful,
@@ -15,10 +15,10 @@
       * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
       * GNU General Public License for more details.
 
-      * You should have received a copy of the GNU 
-      * General Public License along with this program.  
+      * You should have received a copy of the GNU
+      * General Public License along with this program.
       * If not, see <https://www.gnu.org/licenses/>.
-       
+
        IDENTIFICATION DIVISION.
        PROGRAM-ID. VER-CPF.
        ENVIRONMENT DIVISION.
@@ -46,42 +46,38 @@
            77 I PIC 9(2).
        PROCEDURE DIVISION.
        MAIN-PROCEDURE.
-      *     Type CPF.
-            DISPLAY "Digite seu CPF: ".
-            ACCEPT CPF.
-            PERFORM VARYING I FROM 1 BY 1 UNTIL I = 10
-               COMPUTE ACC = ACC + (NCPF(I) * (11 - I))
-            END-PERFORM.
-            COMPUTE ACC = FUNCTION MOD(ACC, 11).
-            COMPUTE ACC = 11 - ACC.
-            IF ACC > 9
-                MOVE ZEROES TO ACC
-            END-IF.
-            MOVE ACC TO DIGIT(1).
-            MOVE ZEROES TO ACC.
-            PERFORM VARYING I FROM 1 BY 1 UNTIL I = 10
-               COMPUTE ACC = ACC + (NCPF(I) * (12 - I))
-            END-PERFORM.
-            COMPUTE ACC = ACC + (DIGIT(1) * 2).
-            COMPUTE ACC = FUNCTION MOD(ACC, 11).
-            COMPUTE ACC = 11 - ACC.
-            IF ACC > 9
-                MOVE ZEROES TO ACC
-            END-IF.
-            MOVE ACC TO DIGIT(2).
-            MOVE CPF TO DCPF.
-            DISPLAY "CPF NO: "DCPF.
-            IF DIGIT(1) = NCPF(10) AND DIGIT(2) = NCPF(11)
-      *     If the CPF is valid, it says it's OK.
-                DISPLAY "OK!"
-            ELSE
-      *     Else, is warns that it's not valid and shows what should be
+      *    Type CPF.
+           DISPLAY "Digite seu CPF: ".
+           ACCEPT CPF.
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I = 10
+              COMPUTE ACC = ACC + (NCPF(I) * (11 - I))
+           END-PERFORM.
+           COMPUTE ACC = FUNCTION MOD(ACC, 11).
+           COMPUTE ACC = 11 - ACC.
+           COMPUTE ACC = FUNCTION MOD(ACC, 10).
+           MOVE ACC TO DIGIT(1).
+           MOVE ZEROES TO ACC.
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I = 10
+              COMPUTE ACC = ACC + (NCPF(I) * (12 - I))
+           END-PERFORM.
+           COMPUTE ACC = ACC + (DIGIT(1) * 2).
+           COMPUTE ACC = FUNCTION MOD(ACC, 11).
+           COMPUTE ACC = 11 - ACC.
+           COMPUTE ACC = FUNCTION MOD(ACC, 10).
+           MOVE ACC TO DIGIT(2).
+           MOVE CPF TO DCPF.
+           DISPLAY "CPF NO: "DCPF.
+           IF DIGIT(1) = NCPF(10) AND DIGIT(2) = NCPF(11)
+      *    If the CPF is valid, it says it's OK.
+               DISPLAY "OK!"
+           ELSE
+      *    Else, is warns that it's not valid and shows what should be
       *    the valid digits.
-                DISPLAY "~OK!"
-                MOVE CPF TO VCPF
-                MOVE VCPF TO DVCPF
-      *         Displays the valid number with digits.
-                DISPLAY "NO VÁLIDO: "DVCPF "/" DIGIT(1) DIGIT(2)
-            END-IF.
-            STOP RUN.
+               DISPLAY "~OK!"
+               MOVE CPF TO VCPF
+               MOVE VCPF TO DVCPF
+      *        Displays the valid number with digits.
+               DISPLAY "NO VÁLIDO: "DVCPF "/" DIGIT(1) DIGIT(2)
+           END-IF.
+           STOP RUN.
        END PROGRAM VER-CPF.
